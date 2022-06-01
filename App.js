@@ -8,9 +8,14 @@ export default function App() {
   const [list, setList] = useState([]);
 
   function addInputHandler(enteredListText) {
-    setList(currentList => [...currentList, {text: enteredListText, key: Math.random().toString() },])
+    setList(currentList => [...currentList, {text: enteredListText, id: Math.random().toString() }])
   }; 
 
+  function deleteItemHandler(id) {
+    setList(currentList => {
+      return currentList.filter((item) => item.id !== id);
+    });
+  }
 
   return (
     <View style={styles.appContainer}>
@@ -19,8 +24,12 @@ export default function App() {
         <FlatList 
        data={list} 
        renderItem={(itemData) => {
-         return <ListItem text={itemData.item.text}/>;
-       }} />
+         return ( 
+         <ListItem 
+         text={itemData.item.text} 
+         id={itemData.item.id}
+         onDeleteItem={deleteItemHandler} />
+  )}} />
        </View>
     </View>
   );
