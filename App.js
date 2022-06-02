@@ -1,14 +1,25 @@
 import { useState } from 'react'; 
-import { StyleSheet, View, FlatList} from 'react-native';
+import { StyleSheet, View, FlatList, Button} from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
 import ListItem from './components/ListItem';
 import ListItemInput from './components/ListItemInput';
 
 export default function App() {
+  const [modalIsVisible, setModalIsVisible] = useState(false)
   const [list, setList] = useState([]);
+
+  function startAddItemHandler() {
+    setModalIsVisible(true);
+  }
+
+  function endAddItemHandler() {
+    setModalIsVisible(false)
+  }
 
   function addInputHandler(enteredListText) {
     setList(currentList => [...currentList, {text: enteredListText, id: Math.random().toString() }])
+    endAddItemHandler();
   }; 
 
   function deleteItemHandler(id) {
@@ -18,8 +29,15 @@ export default function App() {
   }
 
   return (
+    <>
+    <StatusBar style='dark' />
     <View style={styles.appContainer}>
-      <ListItemInput onAddItem={addInputHandler} />
+      <Button 
+      title='Add Item' 
+      color='steelblue' 
+      onPress={startAddItemHandler}
+      />
+      <ListItemInput visible={modalIsVisible} onAddItem={addInputHandler} onCancel={endAddItemHandler} />
       <View style={styles.listContainer}>
         <FlatList 
        data={list} 
@@ -32,6 +50,7 @@ export default function App() {
   )}} />
        </View>
     </View>
+    </>
   );
 }
 

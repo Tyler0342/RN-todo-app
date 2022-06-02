@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View, TextInput, Button } from 'react-native';
+import { StyleSheet, View, TextInput, Button, Modal, Image } from 'react-native';
 
 const ListItemInput = (props) => {
     const [enteredListText, setEnteredListText] = useState('');
@@ -14,18 +14,30 @@ const ListItemInput = (props) => {
   };
 
   return (
-    <View style={styles.inputContainer}>
-      <TextInput 
-      style={styles.textInput} 
-      placeholder='Add a task'
-      onChangeText={textInputHandler} 
-      value={enteredListText}
+    <Modal visible={props.visible} animationType='slide'>
+        <View style={styles.inputContainer}>
+          <Image style={styles.image} source={require('../assets/images/OIP.jpg')} />
+             <TextInput 
+                style={styles.textInput} 
+                laceholder='Add a task'
+                onChangeText={textInputHandler} 
+                value={enteredListText}
       />
-      <Button title='Add' 
-      color='steelblue'  
-      onPress={addItemHandler}
-      />
-    </View> 
+    <View style={styles.buttonContainer}>
+        <View style={styles.button}>
+        <Button title='Add' 
+        color='steelblue'  
+        onPress={addItemHandler} />
+        </View>
+        <View style={styles.button}>
+        <Button title='Cancel' 
+        color='indigo'
+        onPress={props.onCancel}
+        />
+        </View>
+            </View>
+        </View> 
+    </Modal>
   )
 }
 
@@ -34,18 +46,31 @@ export default ListItemInput
 const styles = StyleSheet.create({
     inputContainer: {
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 10,
-        borderBottomWidth: 2,
-        borderBottomColor: 'powderblue',
+        padding: 16,
+        backgroundColor: 'powderblue'
       },
       textInput: {
         borderWidth: 1,
-        borderColor: 'powderblue',
-        width: '80%',
-        marginRight: 10,
-        padding: 4,
+        borderColor: 'steelblue',
+        backgroundColor: 'powderblue',
+        color: 'black',
+        width: '90%',
+        marginRight: 4,
+        padding: 6,
       },
+      buttonContainer: {
+          flexDirection: 'row',
+          marginTop: 16,
+      },
+      button: {
+          width: '40%',
+          marginHorizontal: 1,
+      },
+      image: {
+        width: 100,
+        height: 100,
+        margin: 40,
+      }
 })
